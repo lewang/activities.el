@@ -76,6 +76,19 @@ This is the recommended configuration, in terms of a ~use-package~ form to be pl
      ("C-x C-a l" . activities-list)))
 #+END_SRC
 
+** Transient menu
+
+As an alternative to binding each command individually, ~activities-transient~ provides a [[https://magit.vc/manual/transient/][transient]] menu that groups all commands in a single keymap:
+
+#+BEGIN_SRC elisp
+  (use-package activities-transient
+    :after activities
+    :bind
+    ("C-x C-a" . activities-transient))
+#+END_SRC
+
+Pressing ~C-x C-a~ will then display a menu with all activities commands organized by category.
+
 * Usage
 
 ** Activities
