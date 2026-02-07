@@ -832,7 +832,7 @@ activity's name is NAME."
                   (save-window-excursion
                     (condition-case err
                         (progn
-                          (bookmark-jump bookmark)
+                          (funcall (or (bookmark-get-handler bookmark) 'bookmark-default-handler) bookmark)
                           (when-let ((local-variable-map
                                       (bookmark-prop-get bookmark 'activities-buffer-local-variables)))
                             (cl-loop for (variable . value) in local-variable-map
