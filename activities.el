@@ -830,14 +830,15 @@ activity's name is NAME."
                  (error)
                  (jumped-to-buffer
                   (save-window-excursion
-                    (condition-case err
-                        (progn
-                          (bookmark-jump bookmark)
-                          (when-let ((local-variable-map
-                                      (bookmark-prop-get bookmark 'activities-buffer-local-variables)))
-                            (cl-loop for (variable . value) in local-variable-map
-                                     do (setf (buffer-local-value variable (current-buffer)) value))))
-                      (error (setf error (format "Error while opening bookmark: ERROR:%S  RECORD:%S" err struct))))
+                    (let ((bookmark-alist (copy-sequence bookmark-alist)))
+                      (condition-case err
+                          (progn
+                            (bookmark-jump bookmark)
+                            (when-let ((local-variable-map
+                                        (bookmark-prop-get bookmark 'activities-buffer-local-variables)))
+                              (cl-loop for (variable . value) in local-variable-map
+                                       do (setf (buffer-local-value variable (current-buffer)) value))))
+                        (error (setf error (format "Error while opening bookmark: ERROR:%S  RECORD:%S" err struct)))))
                     (current-buffer))))
       (if (not (eq temp-buffer jumped-to-buffer))
           ;; Bookmark appears to have been jumped to: return that buffer.
